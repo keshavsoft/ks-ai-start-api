@@ -41,19 +41,23 @@ const main = (inNarrationStep) => {
 
         const fromCopy = createFolderCopyTemplate({
             source: templatePath,
-            destination: "."
+            destination: defaultRouteToHook
         });
 
 
         // const k1 = fs.cpSync(templatePath, ".", { recursive: true });
         console.log("----- : ", fileType, defaultRouteToHook, templatePath, fromCopy);
 
-        // fixAnyJs({
-        //     inTargetPath: process.cwd(),
-        //     inFileType: fileType,
-        //     inValue: defaultRouteToHook,
-        //     OutValue: defaultRouteToHook
-        // });
+        if (fromCopy?.KTF) {
+
+            fixAnyJs({
+                inTargetPath: process.cwd(),
+                inFileType: fileType,
+                inValue: defaultRouteToHook,
+                OutValue: defaultRouteToHook
+            });
+
+        };
 
     };
 
