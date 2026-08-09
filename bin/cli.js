@@ -9,38 +9,28 @@ import getLatestVersion from "./core/getLatestVersion.js";
 
 const require = createRequire(import.meta.url);
 
-// import noArgs from "./v3/forCli/noArgs.js";
-// import singleArg from "./v3/forCli/singleArg.js";
-
 const main = () => {
     const args = process.argv.slice(2);
-
-    console.log("hhhhhhhhh : ", args, __dirname);
-
-
-    // const version = getLatestVersion();
-
+    const v = getLatestVersion();
+    // console.log("22222222 : ", v, args);
     switch (args.length) {
         case 0:
             // noArgs();
+            const mod = require(`./${v}/forCli/noArgs.js`);
+
+            mod.default();
 
             break;
         case 1:
-            const v = getLatestVersion();
+            const mod1 = require(`./${v}/forCli/singleArg.js`);
 
-            const mod = require(`./${v}/forCli/singleArg.js`);
-
-            return mod.default(args[0]);
-
-            // singleArg(args[0]);
+            return mod1.default(args[0]);
 
             break;
 
         default:
             break;
     };
-
-    //   await runner.default(process.cwd(), args[0])
 };
 
 main();
