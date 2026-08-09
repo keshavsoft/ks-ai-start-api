@@ -1,35 +1,35 @@
 #!/usr/bin/env node
 
-import parseArgs from "./core/parseArgs/parseArgs.js";
-import validateArgs from "./core/validateArgs.js";
-import showHelp from "./core/showHelp.js";
+import getKnowledge from "discover-from-knowledge";
+
+import { narrationJson as getNarrationJson } from "pattern-collector-base-files";
+
 import getLatestVersion from "./core/getLatestVersion.js";
 import loadRunner from "./core/loadRunner.js";
-import runRunner from "./core/runRunner.js";
+
+import noArgs from "./forCli/noArgs.js";
+import singleArg from "./forCli/singleArg.js";
 
 const main = async () => {
-    const args = parseArgs();
-    console.log("---------- : ", args);
-
-    if (args.help) {
-        showHelp();
-        return;
-    }
-
-    if (args.version) {
-        console.log(args.packageVersion);
-        return;
-    }
-
-    validateArgs(args);
+    const args = process.argv.slice(2);
 
     const version = getLatestVersion();
-    const runner = await loadRunner(version);
 
+    switch (args.length) {
+        case 0:
+            noArgs();
 
-    const output = await runRunner(runner, args);
+            break;
+        case 1:
+            singleArg(args[0]);
 
-    console.log(JSON.stringify(output, null, 2));
+            break;
+
+        default:
+            break;
+    };
+
+    //   await runner.default(process.cwd(), args[0])
 };
 
 main().catch((error) => {
