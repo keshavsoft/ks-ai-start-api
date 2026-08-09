@@ -1,36 +1,31 @@
 #!/usr/bin/env node
 
-import { narrationJson as getNarrationJson } from "pattern-collector-base-files";
+import { fileNamesJson as getFileNamesJson } from "pattern-collector-base-files";
 
 import getLatestVersion from "../core/getLatestVersion.js";
 import loadRunner from "../core/loadRunnerNoSync.js";
 
 const main = (inSingleArg) => {
-    const fromKnowledge = getKnowledge(process.cwd());
-    const fileType = fromKnowledge?.discovery?.fileType;
-    const narrationJson = getNarrationJson();
-
-    const findNarration = narrationJson?.story.find(element => {
-        return element?.fileNames.find(fileNameLoop => {
-            return fileNameLoop === fileType;
-        });
-    });
-
-    const stepToRun = findNarration?.stepName;
-
-    if (stepToRun) {
-        console.log(`${stepToRun}`);
-    };
+    const fileNamesJson = getFileNamesJson();
 
     const version = getLatestVersion();
-    const runner = loadRunner();
+    const runner = loadRunner(version);
 
-    const fromBin = runner.default({
-        raka: inSingleArg, poka: inSingleArg,
-        toPath: process.cwd()
-    });
+    if (inSingleArg in fileNamesJson) {
+        const localRaka = raka ? raka : fileNamesJson[inSingleArg]?.defaultRouteToHook;
+        const localPoka = poka ? poka : fileNamesJson[inSingleArg]?.defaultRouteToHook;
 
-    console.log("mmmmmmmmmmm : ", fromBin);
+        const fromBin1 = runner({
+            toPath: process.cwd(),
+            raka: localRaka, poka: localPoka
+        });
+    };
+
+    // console.log("mmmmmmmmmmm : ", fileNamesJson);
+
+    const fromBin = runner({ toPath: process.cwd() });
+
+    // console.log("mmmmmmmmmmm : ", fromBin);
 
 };
 

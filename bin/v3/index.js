@@ -14,7 +14,14 @@ export default ({ raka, poka, toPath, alterArray }) => {
             discovery,
             message: "Unable to discover project type."
         };
-    }
+    };
+
+    // console.log("discovery : ", discovery?.discovery?.discovery);
+    // console.log("discovery : ", discovery?.discovery?.storyFromFile?.defaultRouteToHook);
+    const defaultRouteToHook = discovery?.discovery?.storyFromFile?.defaultRouteToHook;
+    // console.log("discovery : ", discovery?.discovery?.storyFromFile?.defaultRouteToHook);
+    const localRaka = raka ? raka : defaultRouteToHook;
+    const localPoka = poka ? poka : defaultRouteToHook;
 
     const fileType = discovery.discovery.fileType;
 
@@ -22,7 +29,7 @@ export default ({ raka, poka, toPath, alterArray }) => {
         inFileType: fileType
     });
 
-    const destination = getDestinationPath(toPath, raka);
+    const destination = getDestinationPath(toPath, localRaka);
 
     const templateCopied = copyTemplate(source, destination);
 
@@ -33,8 +40,8 @@ export default ({ raka, poka, toPath, alterArray }) => {
             inTargetPath: toPath,
             alterArray,
             inFileType: fileType,
-            inValue: raka,
-            OutValue: poka
+            inValue: localRaka,
+            OutValue: localPoka
         });
     }
 
