@@ -13,23 +13,6 @@ const main = (inSingleArg) => {
     const fileNamesJson = getFileNamesJson();
 
     fromNarration(inSingleArg);
-
-    // if (inSingleArg in fileNamesJson) {
-    //     const localRaka = raka ? raka : fileNamesJson[inSingleArg]?.defaultRouteToHook;
-    //     const localPoka = poka ? poka : fileNamesJson[inSingleArg]?.defaultRouteToHook;
-
-    //     const fromBin1 = runner({
-    //         toPath: process.cwd(),
-    //         raka: localRaka, poka: localPoka
-    //     });
-    // };
-
-    // // console.log("mmmmmmmmmmm : ", fileNamesJson);
-
-    // const fromBin = runner({ toPath: process.cwd() });
-
-    // console.log("mmmmmmmmmmm : ", fromBin);
-
 };
 
 export default main;

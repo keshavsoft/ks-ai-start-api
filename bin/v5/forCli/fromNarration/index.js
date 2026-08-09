@@ -6,15 +6,16 @@ import fixAnyJs from "express-fix-any-js";
 import discover from "discover-from-knowledge";
 
 import {
-    narrationJson as getNarrationJson,
-    getTemplateFiles
+    narrationJson as getNarrationJson
 } from "pattern-collector-base-files";
 
 import stepStart from "../../stepStart/index.js";
+import createFolderCopyTemplate from "./createFolderCopyTemplate.js";
+import getPaths from "./getPaths.js";
 
 // import loadRunner from "../../core/loadRunnerNoSync.js";
 
-const createFolderCopyTemplate = ({ source, destination }) => {
+const createFolderCopyTemplate1 = ({ source, destination }) => {
     fs.mkdirSync(destination, { recursive: true });
 
     fs.cpSync(source, destination, { recursive: true });
@@ -25,6 +26,25 @@ const createFolderCopyTemplate = ({ source, destination }) => {
 };
 
 const main = (inNarrationStep) => {
+    const { templatePath, defaultRouteToHook, fileType } = getPaths(inNarrationStep);
+
+    const fromCopy = createFolderCopyTemplate({
+        source: templatePath,
+        destination: defaultRouteToHook
+    });
+
+    if (fromCopy?.KTF) {
+        fixAnyJs({
+            inTargetPath: process.cwd(),
+            inFileType: fileType,
+            inValue: defaultRouteToHook,
+            OutValue: defaultRouteToHook
+        });
+
+    };
+};
+
+const main1 = (inNarrationStep) => {
     const narrationJson = getNarrationJson();
     const knowledge = discover(process.cwd());
 
@@ -44,12 +64,7 @@ const main = (inNarrationStep) => {
             destination: defaultRouteToHook
         });
 
-
-        // const k1 = fs.cpSync(templatePath, ".", { recursive: true });
-        console.log("----- : ", fileType, defaultRouteToHook, templatePath, fromCopy);
-
         if (fromCopy?.KTF) {
-
             fixAnyJs({
                 inTargetPath: process.cwd(),
                 inFileType: fileType,
@@ -58,15 +73,7 @@ const main = (inNarrationStep) => {
             });
 
         };
-
     };
-
-    // // console.log("mmmmmmmmmmm : ", fileNamesJson);
-
-    // const fromBin = runner({ toPath: process.cwd() });
-
-    // console.log("mmmmmmmmmmm : ", fromBin);
-
 };
 
 export default main;
