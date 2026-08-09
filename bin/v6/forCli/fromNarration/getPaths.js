@@ -23,10 +23,11 @@ const startFunc = (inNarrationStep) => {
         if (fileType in fileNamesJson) {
 
             const defaultRouteToHook = fileNamesJson?.[fileType]?.defaultRouteToHook;
+            const inputsFromUser = fileNamesJson?.[fileType]?.inputsFromUser;
 
             const templatePath = getTemplateFiles(fileType);
 
-            return { templatePath, defaultRouteToHook, fileType };
+            return { templatePath, defaultRouteToHook, fileType, inputsFromUser };
         };
 
     };
