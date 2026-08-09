@@ -15,11 +15,28 @@ const main = () => {
         });
     });
 
-    const stepToRun = findNarration?.stepName;
+    const filterNarrations = narrationJson?.story.filter(element => {
+        return element?.fileNames.find(fileNameLoop => {
+            return fileNameLoop === fileType;
+        });
+    });
 
-    if (stepToRun) {
-        console.log(`${stepToRun}`);
+    const returnNarrations = filterNarrations.map(element => {
+        return element?.stepName;
+    });
+
+    // console.log("k1 : ", k1);
+
+    // const stepToRun = findNarration?.stepName;
+
+    // if (stepToRun) {
+    //     console.log(`${stepToRun}`);
+    // };
+
+    if (returnNarrations) {
+        console.log(`${returnNarrations}`);
     };
+
 };
 
 export default main;
