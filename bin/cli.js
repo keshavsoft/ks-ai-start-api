@@ -1,27 +1,38 @@
 #!/usr/bin/env node
+import path from "path";
+import { fileURLToPath } from "url";
 
-import getKnowledge from "discover-from-knowledge";
+const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-import { narrationJson as getNarrationJson } from "pattern-collector-base-files";
-
+import { createRequire } from "module";
 import getLatestVersion from "./core/getLatestVersion.js";
-import loadRunner from "./core/loadRunner.js";
 
-import noArgs from "./forCli/noArgs.js";
-import singleArg from "./forCli/singleArg.js";
+const require = createRequire(import.meta.url);
 
-const main = async () => {
+// import noArgs from "./v3/forCli/noArgs.js";
+// import singleArg from "./v3/forCli/singleArg.js";
+
+const main = () => {
     const args = process.argv.slice(2);
 
-    const version = getLatestVersion();
+    console.log("hhhhhhhhh : ", args, __dirname);
+
+
+    // const version = getLatestVersion();
 
     switch (args.length) {
         case 0:
-            noArgs();
+            // noArgs();
 
             break;
         case 1:
-            singleArg(args[0]);
+            const v = getLatestVersion();
+
+            const mod = require(`./${v}/forCli/singleArg.js`);
+
+            return mod.default(args[0]);
+
+            // singleArg(args[0]);
 
             break;
 
@@ -32,7 +43,4 @@ const main = async () => {
     //   await runner.default(process.cwd(), args[0])
 };
 
-main().catch((error) => {
-    console.error(`\x1b[31mRuntime Error: ${error.message}\x1b[0m`);
-    process.exit(1);
-});
+main();
