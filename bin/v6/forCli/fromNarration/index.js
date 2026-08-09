@@ -1,33 +1,30 @@
 #!/usr/bin/env node
 
-import fs from "fs";
-
 import fixAnyJs from "express-fix-any-js";
-import discover from "discover-from-knowledge";
+import readline from "node:readline/promises";
+import { stdin as input, stdout as output } from "node:process";
 
-import {
-    narrationJson as getNarrationJson
-} from "pattern-collector-base-files";
-
-import stepStart from "../../stepStart/index.js";
 import createFolderCopyTemplate from "./createFolderCopyTemplate.js";
 import getPaths from "./getPaths.js";
 
-// import loadRunner from "../../core/loadRunnerNoSync.js";
+const main = async (inNarrationStep) => {
+    let { templatePath, defaultRouteToHook, fileType } = getPaths(inNarrationStep);
 
-const createFolderCopyTemplate1 = ({ source, destination }) => {
-    fs.mkdirSync(destination, { recursive: true });
+    const rl = readline.createInterface({ input, output });
 
-    fs.cpSync(source, destination, { recursive: true });
+    const tableName = await rl.question("Enter Table Name : ");
 
-    return {
-        KTF: true
-    };
-};
+    // console.log("You entered:", answer);
 
-const main = (inNarrationStep) => {
-    const { templatePath, defaultRouteToHook, fileType } = getPaths(inNarrationStep);
+    rl.close();
 
+    defaultRouteToHook = tableName;
+
+    const alterArray = [
+        { "key": "<TABLE_NAME>", "value": tableName }
+    ];
+
+    // console.log(templatePath, defaultRouteToHook, fileType);
     const fromCopy = createFolderCopyTemplate({
         source: templatePath,
         destination: defaultRouteToHook
@@ -38,41 +35,10 @@ const main = (inNarrationStep) => {
             inTargetPath: process.cwd(),
             inFileType: fileType,
             inValue: defaultRouteToHook,
-            OutValue: defaultRouteToHook
+            OutValue: defaultRouteToHook,
+            alterArray
         });
 
-    };
-};
-
-const main1 = (inNarrationStep) => {
-    const narrationJson = getNarrationJson();
-    const knowledge = discover(process.cwd());
-
-    const findNarration = narrationJson?.story?.find(element => {
-        return element?.stepName === inNarrationStep;
-    });
-
-    if (findNarration) {
-        const fileNames = findNarration?.fileNames;
-        const fileType = knowledge?.discovery?.fileType;
-        const defaultRouteToHook = knowledge?.discovery?.storyFromFile?.defaultRouteToHook;
-
-        const templatePath = getTemplateFiles(fileType);
-
-        const fromCopy = createFolderCopyTemplate({
-            source: templatePath,
-            destination: defaultRouteToHook
-        });
-
-        if (fromCopy?.KTF) {
-            fixAnyJs({
-                inTargetPath: process.cwd(),
-                inFileType: fileType,
-                inValue: defaultRouteToHook,
-                OutValue: defaultRouteToHook
-            });
-
-        };
     };
 };
 

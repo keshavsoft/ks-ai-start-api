@@ -1,30 +1,34 @@
 #!/usr/bin/env node
 
-import fs from "fs";
-
-import discover from "discover-from-knowledge";
-
 import {
     narrationJson as getNarrationJson,
-    getTemplateFiles
+    getTemplateFiles, fileNamesJson as getFileNamesJson
 } from "pattern-collector-base-files";
 
 const startFunc = (inNarrationStep) => {
     const narrationJson = getNarrationJson();
-    const knowledge = discover(process.cwd());
 
     const findNarration = narrationJson?.story?.find(element => {
         return element?.stepName === inNarrationStep;
     });
 
+    // console.log("findNarration : ", findNarration);
+
     if (findNarration) {
         const fileNames = findNarration?.fileNames;
-        const fileType = knowledge?.discovery?.fileType;
-        const defaultRouteToHook = knowledge?.discovery?.storyFromFile?.defaultRouteToHook;
+        const fileType = fileNames.at(-1);
 
-        const templatePath = getTemplateFiles(fileType);
+        const fileNamesJson = getFileNamesJson();
 
-        return { templatePath, defaultRouteToHook, fileType };
+        if (fileType in fileNamesJson) {
+
+            const defaultRouteToHook = fileNamesJson?.[fileType]?.defaultRouteToHook;
+
+            const templatePath = getTemplateFiles(fileType);
+
+            return { templatePath, defaultRouteToHook, fileType };
+        };
+
     };
 };
 
