@@ -1,8 +1,9 @@
 import getPaths from "./getPaths.js";
-import collectInputs from "./collectInputs.js";
+// import collectInputs from "./collectInputs.js";
 import createTemplate from "./createTemplate.js";
 import applyFix from "./applyFix.js";
 import sendResult from "./sendResult.js";
+import collectInputs from "./collectInputs/index.js";
 
 const main = async (inNarrationStep) => {
     const paths = getPaths(inNarrationStep);
@@ -23,7 +24,7 @@ const main = async (inNarrationStep) => {
 
     applyFix({
         fileType: paths.fileType,
-        inputsFromUser
+        inInputsFromUser: inputsFromUser
     });
 
     sendResult({
