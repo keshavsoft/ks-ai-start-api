@@ -1,30 +1,29 @@
-// import discover from "discover-from-knowledge";
+import discover from "discover-from-knowledge";
 import fixAnyJs from "express-fix-any-js";
 
 import getSourcePath from "./getSourcePath.js";
 import getDestinationPath from "./getDestinationPath.js";
 import copyTemplate from "./copyTemplate.js";
-import discover from "./discover.js";
-import knowledge from "./knowledge.js";
 
 export default ({ raka, poka, toPath, alterArray }) => {
-    const fromDiscovery = discover(toPath);
+    const discovery = discover(toPath);
 
-    if (!fromDiscovery.KTF) {
-        return fromDiscovery;
+    if (!discovery.success) {
+        return {
+            success: false,
+            discovery,
+            message: "Unable to discover project type."
+        };
     };
 
-    const fromKnowledge = knowledge(fromDiscovery.fileType);
-
-    if (!fromKnowledge.KTF) {
-        return fromKnowledge;
-    };
-
-    const defaultRouteToHook = fromKnowledge?.fileTypeStory?.defaultRouteToHook;
+    // console.log("discovery : ", discovery?.discovery?.discovery);
+    // console.log("discovery : ", discovery?.discovery?.storyFromFile?.defaultRouteToHook);
+    const defaultRouteToHook = discovery?.discovery?.storyFromFile?.defaultRouteToHook;
+    // console.log("discovery : ", discovery?.discovery?.storyFromFile?.defaultRouteToHook);
     const localRaka = raka ? raka : defaultRouteToHook;
     const localPoka = poka ? poka : defaultRouteToHook;
 
-    const fileType = fromDiscovery?.fileType;
+    const fileType = discovery.discovery.fileType;
 
     const source = getSourcePath({
         inFileType: fileType
@@ -48,13 +47,12 @@ export default ({ raka, poka, toPath, alterArray }) => {
 
     return {
         success: true,
+        discovery,
         template: {
             source,
             destination,
             copied: templateCopied
         },
-        modification,
-        fromDiscovery,
-        fromKnowledge
+        modification
     };
 };

@@ -9,12 +9,6 @@ const main = () => {
     const fileType = fromKnowledge?.discovery?.fileType;
     const narrationJson = getNarrationJson();
 
-    const findNarration = narrationJson?.story.find(element => {
-        return element?.fileNames.find(fileNameLoop => {
-            return fileNameLoop === fileType;
-        });
-    });
-
     const filterNarrations = narrationJson?.story.filter(element => {
         return element?.fileNames.find(fileNameLoop => {
             return fileNameLoop === fileType;
@@ -25,18 +19,9 @@ const main = () => {
         return element?.stepName;
     });
 
-    // console.log("k1 : ", k1);
-
-    // const stepToRun = findNarration?.stepName;
-
-    // if (stepToRun) {
-    //     console.log(`${stepToRun}`);
-    // };
-
     if (returnNarrations) {
         console.log(`${returnNarrations}`);
     };
-
 };
 
 export default main;
