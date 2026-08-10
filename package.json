@@ -1,6 +1,6 @@
 {
   "name": "ks-ai-start-api",
-  "version": "1.7.1",
+  "version": "1.7.2",
   "description": "CLI to build for appjs, the endpoints",
   "keywords": [
     "cli",

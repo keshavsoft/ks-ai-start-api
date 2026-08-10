@@ -27,7 +27,7 @@ const main = async (inNarrationStep) => {
         inputsFromUser.poka = defaultRouteToHook;
     };
 
-    console.log("inputsFromUser : ", inputsFromUser);
+    // console.log("inputsFromUser : ", inputsFromUser);
 
     Object.keys(inputsFromUser)?.forEach(async (key) => {
         if (key === "raka" || key === "poka") {
@@ -59,43 +59,15 @@ const main = async (inNarrationStep) => {
             OutValue: inputsFromUser.poka
         });
 
-    };
-};
-
-const main1 = async (inNarrationStep) => {
-    let { templatePath, defaultRouteToHook, fileType } = getPaths(inNarrationStep);
-
-    const rl = readline.createInterface({ input, output });
-
-    const tableName = await rl.question("Enter Table Name : ");
-
-    // console.log("You entered:", answer);
-
-    rl.close();
-
-    defaultRouteToHook = tableName;
-
-    const alterArray = [
-        { "key": "<TABLE_NAME>", "value": tableName }
-    ];
-
-    // console.log(templatePath, defaultRouteToHook, fileType);
-    const fromCopy = createFolderCopyTemplate({
-        source: templatePath,
-        destination: defaultRouteToHook
-    });
-
-    if (fromCopy?.KTF) {
-        fixAnyJs({
-            inTargetPath: process.cwd(),
-            inFileType: fileType,
-            inValue: defaultRouteToHook,
-            OutValue: defaultRouteToHook,
-            alterArray
-        });
+        // SUCCESS RESULT -> stdout
+        process.stdout.write(
+            JSON.stringify({
+                success: true,
+                nextCommand: `cd ${inputsFromUser.raka}`
+            }) + "\n"
+        );
 
     };
 };
-
 
 export default main;

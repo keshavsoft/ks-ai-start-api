@@ -3,10 +3,6 @@
 import fromNarration from "./fromNarration/index.js";
 
 const main = (inSingleArg) => {
-    console.log("inSingleArg :", inSingleArg);
-
-
-
     fromNarration(inSingleArg).then();
 };
 
